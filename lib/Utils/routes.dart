@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-
 import 'package:hc_dapp/Pages/splash_screen_1.dart';
 import 'package:hc_dapp/Pages/selection.dart';
 import 'package:hc_dapp/Pages/doctor_login.dart';
 import 'package:hc_dapp/Pages/patient_login.dart';
 import 'package:hc_dapp/Pages/doctor_home_page.dart';
 import 'package:hc_dapp/Pages/patient_home_page.dart';
-
 // import 'package:hc_dapp/Pages/view_prescription.dart';
-
+import 'package:hc_dapp/Pages/doctor_signup_page.dart';
+import 'package:hc_dapp/Pages/patient_signup_page.dart';
 
 class MyRoutes {
   static const String splashScreenPage = "/splashScreenPage";
@@ -19,16 +18,17 @@ class MyRoutes {
   static const String doctorHomePage = "/doctorHome";
   static const String patientHomePage = "/patientHome";
 
-  static final routes = <String, WidgetBuilder>{
+  static const String doctorSignupPage = "/doctorSignup";
+  static const String patientSignupPage = "/patientSignup";
 
+  static final routes = <String, WidgetBuilder>{
     splashScreenPage: (context) => const SplashScreenPage(),
     selectionPage: (context) => const SelectionPage(),
     doctorLoginPage: (context) => const DoctorLoginPage(),
     patientLoginPage: (context) => const PatientLoginPage(),
-
-   doctorHomePage: (context) => const DoctorHomePage(),
-   patientHomePage: (context) => const PatientHomePage(),
-
-
+    doctorHomePage: (context) => const DoctorHomePage(),
+    patientHomePage: (context) => const PatientHomePage(),
+    doctorSignupPage: (context) => const DoctorSignupPage(),
+    patientSignupPage: (context) => const PatientSignupPage(),
   };
 }

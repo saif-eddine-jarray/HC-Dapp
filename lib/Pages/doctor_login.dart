@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:hc_dapp/Utils/routes.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hc_dapp/utils.dart';
-import 'package:hc_dapp/Utils/doctorServices.dart';
+import 'package:hc_dapp/Services/Contracts.dart';
 import 'package:provider/provider.dart';
 import 'dart:developer' as dev;
 import 'package:web3dart/web3dart.dart';
@@ -23,7 +23,6 @@ class _DoctorLoginPageState extends State<DoctorLoginPage> {
 
   @override
   Widget build(BuildContext context) {
-     var doctorServices = Provider.of<DoctorServices>(context);
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
@@ -83,36 +82,6 @@ class _DoctorLoginPageState extends State<DoctorLoginPage> {
                         ),
                       ),
                     ),
-                    // Container(
-                    //   // inputwithlabelinsideLdj (I324:330;6693:251640)
-                    //   margin: EdgeInsets.fromLTRB(0, 0, 0, 4),
-                    //   padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
-                    //   width: double.infinity,
-                    //   height: 56,
-                    //   decoration: BoxDecoration(
-                    //     border: Border.all(color: Color(0xffe0e0e0)),
-                    //     color: Color(0xffffffff),
-                    //     borderRadius: BorderRadius.circular(12),
-                    //   ),
-                    //   child: Container(
-                    //     // autogrouprbgyywb (CfkNf1ctNrRbYa6tmdrbGy)
-                    //     margin: EdgeInsets.fromLTRB(0, 0, 199, 0),
-                    //     width: 112,
-                    //     height: double.infinity,
-                    //     child: Center(
-                    //       child: Text(
-                    //         'Your Wallet Address',
-                    //         style: SafeGoogleFont(
-                    //           'Cuprum',
-                    //           fontSize: 14,
-                    //           fontWeight: FontWeight.w700,
-                    //           height: 1.7142857143,
-                    //           color: Color(0xffa3a3a3),
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                       child: CupertinoFormSection(
@@ -123,22 +92,6 @@ class _DoctorLoginPageState extends State<DoctorLoginPage> {
                           //borderRadius: BorderRadius.circular(8),
                         ),
                         children: [
-                          // TextFormField(
-                          //   keyboardType: TextInputType.text,
-                          //   decoration: InputDecoration(
-                          //       hintText: 'Your Wallet Address',
-                          //       border: OutlineInputBorder(
-                          //           borderSide: BorderSide(
-                          //               color: Colors.grey, width: 32.0),
-                          //           borderRadius: BorderRadius.circular(12)),
-                          //       focusedBorder: OutlineInputBorder(
-                          //           borderSide: BorderSide(
-                          //               color: Colors.grey, width: 1.0),
-                          //           borderRadius: BorderRadius.circular(12))),
-                          //   onChanged: (value) {
-                          //     //Do something with this value
-                          //   },
-                          // ),
                           CupertinoFormRow(
                             //padding: EdgeInsets.only(left: 0),
                             child: CupertinoTextFormFieldRow(
@@ -160,44 +113,6 @@ class _DoctorLoginPageState extends State<DoctorLoginPage> {
                               controller: addressController,
                             ),
                           ),
-                          // CupertinoFormRow(
-                          //   //padding: EdgeInsets.only(left: 0),
-                          //   child: CupertinoTextFormFieldRow(
-                          //     style: GoogleFonts.poppins(),
-                          //     //controller: privateKey,
-                          //     placeholder: "Enter your private key",
-                          //     prefix: Text(
-                          //       "Key      ",
-                          //       style: Theme.of(context).textTheme.bodySmall,
-                          //     ),
-                          //     padding: const EdgeInsets.only(left: 0),
-                          //     keyboardType: TextInputType.emailAddress,
-                          //     validator: (value) {
-                          //       if (value!.isEmpty) {
-                          //         return "Key can't be empty";
-                          //       }
-                          //       return null;
-                          //     },
-                          //   ),
-                          // ),
-                          // CupertinoTextFormFieldRow(
-                          //   style: GoogleFonts.poppins(),
-                          //   //controller: role,
-                          //   //onTap: _showPicker,
-                          //   placeholder: "Tap to Show Roles",
-                          //   validator: (value) {
-                          //     if (value!.isEmpty) {
-                          //       return "Role can't be empty";
-                          //     }
-                          //     return null;
-                          //   },
-                          //   decoration: const BoxDecoration(color: Colors.white),
-                          //   prefix: Text(
-                          //     "Role            ",
-                          //     style: Theme.of(context).textTheme.bodySmall,
-                          //   ),
-                          //   readOnly: true,
-                          // ),
                         ],
                       ),
                     ),
@@ -243,11 +158,6 @@ class _DoctorLoginPageState extends State<DoctorLoginPage> {
                           child: ElevatedButton(
                             // onPressed: () => moveToHome(),
                             onPressed: () {
-                              dev.log("before exist");
-                             // doctorServices.addDoctor("imed","ali");
-                              doctorServices.exist();
-                              doctorServices.displayDoctor();
-                              dev.log("after exist");
                               // Navigate to next screen when button is pressed
                               Navigator.pushReplacementNamed(
                                   context,
@@ -256,8 +166,6 @@ class _DoctorLoginPageState extends State<DoctorLoginPage> {
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Color(0xff05c0ff),
-                              // primary: Color(0xff05c0ff),
-                              // onPrimary: Colors.white,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),

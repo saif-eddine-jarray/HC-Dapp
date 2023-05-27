@@ -14,128 +14,8 @@ class PatientLoginPage extends StatefulWidget {
 class _PatientLoginPageState extends State<PatientLoginPage> {
   bool adding = false;
 
-// class LoginPage extends StatefulWidget {
-//   const LoginPage({Key? key}) : super(key: key);
-
-//   @override
-//   _LoginPageState createState() => _LoginPageState();
-// }
-
-// class _LoginPageState extends State<LoginPage> {
-//   TextEditingController address = TextEditingController();
-//   TextEditingController privateKey = TextEditingController();
-//   TextEditingController role = TextEditingController();
-//   final _formKey = GlobalKey<FormState>();
-
-//   _showPicker() {
-//     showModalBottomSheet(
-//         context: context,
-//         shape: const RoundedRectangleBorder(
-//             borderRadius: BorderRadius.vertical(top: Radius.circular(5.0))),
-//         builder: (BuildContext bc) {
-//           return SafeArea(
-//             child: Wrap(
-//               children: <Widget>[
-//                 const Padding(
-//                   padding: EdgeInsets.fromLTRB(16, 8, 8, 8),
-//                   child: Text(
-//                     "Roles",
-//                     style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
-//                   ),
-//                 ),
-//                 ListTile(
-//                     leading: const Icon(
-//                       CupertinoIcons.person_alt_circle,
-//                       color: Colors.black,
-//                     ),
-//                     title: const Text(
-//                       'Patient',
-//                       style:
-//                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-//                     ),
-//                     onTap: () {
-//                       role.text = "Patient";
-//                       setState(() {});
-//                       Navigator.pop(context);
-//                     }),
-//                 ListTile(
-//                     leading: const Icon(
-//                       FontAwesomeIcons.userDoctor,
-//                       color: Colors.black,
-//                     ),
-//                     title: const Text(
-//                       'Doctor',
-//                       style:
-//                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-//                     ),
-//                     onTap: () {
-//                       role.text = "Doctor";
-//                       setState(() {});
-//                       Navigator.pop(context);
-//                     })
-//               ],
-//             ),
-//           );
-//         });
-//   }
-
   void moveToHome() async {
     bool result;
-    // if (_formKey.currentState!.validate()) {
-    //   adding = true;
-    //   setState(() {});
-    //   if (role.text == "Patient") {
-    //     try {
-    //       result = await Connector.logInPatient(address.text, privateKey.text);
-    //       if (!result) {
-    //         Fluttertoast.showToast(msg: "Wrong credentials");
-    //         setState(() {
-    //           adding = false;
-    //         });
-    //       } else {
-    //         Fluttertoast.showToast(msg: "Login Success");
-    //         Connector.address = EthereumAddress.fromHex(address.text);
-    //         Connector.key = privateKey.text;
-    //         await Navigator.pushReplacementNamed(
-    //             context, MyRoutes.patientHomePage);
-    //       }
-    //     } catch (e) {
-    //       // print("here");
-    //       // print(e);
-    //       Fluttertoast.showToast(
-    //           msg: "Oops! Something went wrong. Try Again...");
-    //       // print('Error creating user: $e');
-    //       setState(() {
-    //         adding = false;
-    //       });
-    //     }
-    //     adding = false;
-    //   } else if (role.text == "Doctor") {
-    //     try {
-    //       result = await Connector.logInPatient(address.text, privateKey.text);
-    //       if (!result) {
-    //         Fluttertoast.showToast(msg: "Wrong credentials");
-    //         setState(() {
-    //           adding = false;
-    //         });
-    //       } else {
-    //         Fluttertoast.showToast(msg: "Login Success");
-    //         Connector.address = EthereumAddress.fromHex(address.text);
-    //         Connector.key = privateKey.text;
-    //         await Navigator.pushReplacementNamed(
-    //             context, MyRoutes.doctorHomePage);
-    //       }
-    //     } catch (e) {
-    //       Fluttertoast.showToast(
-    //           msg: "Oops! Something went wrong. Try Again...");
-    //       // print('Error creating user: $e');
-    //       setState(() {
-    //         adding = false;
-    //       });
-    //     }
-    //     adding = false;
-    //   }
-    // }
   }
 
   @override
@@ -199,36 +79,7 @@ class _PatientLoginPageState extends State<PatientLoginPage> {
                         ),
                       ),
                     ),
-                    // Container(
-                    //   // inputwithlabelinsideLdj (I324:330;6693:251640)
-                    //   margin: EdgeInsets.fromLTRB(0, 0, 0, 4),
-                    //   padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
-                    //   width: double.infinity,
-                    //   height: 56,
-                    //   decoration: BoxDecoration(
-                    //     border: Border.all(color: Color(0xffe0e0e0)),
-                    //     color: Color(0xffffffff),
-                    //     borderRadius: BorderRadius.circular(12),
-                    //   ),
-                    //   child: Container(
-                    //     // autogrouprbgyywb (CfkNf1ctNrRbYa6tmdrbGy)
-                    //     margin: EdgeInsets.fromLTRB(0, 0, 199, 0),
-                    //     width: 112,
-                    //     height: double.infinity,
-                    //     child: Center(
-                    //       child: Text(
-                    //         'Your Wallet Address',
-                    //         style: SafeGoogleFont(
-                    //           'Cuprum',
-                    //           fontSize: 14,
-                    //           fontWeight: FontWeight.w700,
-                    //           height: 1.7142857143,
-                    //           color: Color(0xffa3a3a3),
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
+                   
                     Padding(
                       padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                       child: CupertinoFormSection(
@@ -239,22 +90,6 @@ class _PatientLoginPageState extends State<PatientLoginPage> {
                           //borderRadius: BorderRadius.circular(8),
                         ),
                         children: [
-                          // TextFormField(
-                          //   keyboardType: TextInputType.text,
-                          //   decoration: InputDecoration(
-                          //       hintText: 'Your Wallet Address',
-                          //       border: OutlineInputBorder(
-                          //           borderSide: BorderSide(
-                          //               color: Colors.grey, width: 32.0),
-                          //           borderRadius: BorderRadius.circular(12)),
-                          //       focusedBorder: OutlineInputBorder(
-                          //           borderSide: BorderSide(
-                          //               color: Colors.grey, width: 1.0),
-                          //           borderRadius: BorderRadius.circular(12))),
-                          //   onChanged: (value) {
-                          //     //Do something with this value
-                          //   },
-                          // ),
                           CupertinoFormRow(
                             //padding: EdgeInsets.only(left: 0),
                             child: CupertinoTextFormFieldRow(
@@ -275,44 +110,6 @@ class _PatientLoginPageState extends State<PatientLoginPage> {
                               },
                             ),
                           ),
-                          // CupertinoFormRow(
-                          //   //padding: EdgeInsets.only(left: 0),
-                          //   child: CupertinoTextFormFieldRow(
-                          //     style: GoogleFonts.poppins(),
-                          //     //controller: privateKey,
-                          //     placeholder: "Enter your private key",
-                          //     prefix: Text(
-                          //       "Key      ",
-                          //       style: Theme.of(context).textTheme.bodySmall,
-                          //     ),
-                          //     padding: const EdgeInsets.only(left: 0),
-                          //     keyboardType: TextInputType.emailAddress,
-                          //     validator: (value) {
-                          //       if (value!.isEmpty) {
-                          //         return "Key can't be empty";
-                          //       }
-                          //       return null;
-                          //     },
-                          //   ),
-                          // ),
-                          // CupertinoTextFormFieldRow(
-                          //   style: GoogleFonts.poppins(),
-                          //   //controller: role,
-                          //   //onTap: _showPicker,
-                          //   placeholder: "Tap to Show Roles",
-                          //   validator: (value) {
-                          //     if (value!.isEmpty) {
-                          //       return "Role can't be empty";
-                          //     }
-                          //     return null;
-                          //   },
-                          //   decoration: const BoxDecoration(color: Colors.white),
-                          //   prefix: Text(
-                          //     "Role            ",
-                          //     style: Theme.of(context).textTheme.bodySmall,
-                          //   ),
-                          //   readOnly: true,
-                          // ),
                         ],
                       ),
                     ),

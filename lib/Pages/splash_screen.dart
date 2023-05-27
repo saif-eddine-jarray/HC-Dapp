@@ -19,37 +19,6 @@ class _PatientHomePageState extends State<PatientHomePage> {
   TextEditingController doctorAddress = TextEditingController();
   bool showLoading = true;
   List<List<String>> prescriptions = [];
-  // void setAuthorization() async {
-  //   if (doctorAddress.text.length < 40) {
-  //     Fluttertoast.showToast(msg: "Wrong Address");
-  //     return;
-  //   }
-  //   bool isAuthorized = await Connector.addAuthorization(
-  //       EthereumAddress.fromHex(doctorAddress.text),
-  //       Connector.address,
-  //       Connector.key);
-  //   if (!isAuthorized) {
-  //     Fluttertoast.showToast(msg: "Authorization Failed");
-  //   } else {
-  //     Fluttertoast.showToast(
-  //         msg: "Doctor is now authorized to give you prescription.");
-  //     doctorAddress.clear();
-  //   }
-  // }
-
-  // void getPrescriptions() async {
-  //   setState(() {
-  //     showLoading = true;
-  //   });
-  //   List<dynamic> result = await Connector.getPresc(Connector.address);
-  //   for (var element in result) {
-  //     prescriptions.add(element.toString().split('#'));
-  //   }
-  //   prescriptions = prescriptions.reversed.toList();
-  //   setState(() {
-  //     showLoading = false;
-  //   });
-  // }
 
   _showPickerAuthorization() {
     showModalBottomSheet(

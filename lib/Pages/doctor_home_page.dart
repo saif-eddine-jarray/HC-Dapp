@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-//import 'package:hc_dapp/Utils/connector.dart';
+import 'package:hc_dapp/Services/Contracts.dart';
 import 'package:hc_dapp/Utils/routes.dart';
+import 'package:provider/provider.dart';
 import 'package:web3dart/web3dart.dart';
-
+import 'dart:developer' as dev;
 class DoctorHomePage extends StatefulWidget {
   const DoctorHomePage({Key? key}) : super(key: key);
 
@@ -15,80 +16,16 @@ class DoctorHomePage extends StatefulWidget {
 }
 
 class _DoctorHomePageState extends State<DoctorHomePage> {
-  // TextEditingController feeController = TextEditingController();
   TextEditingController patientAddress = TextEditingController();
-  TextEditingController notes = TextEditingController();
-  TextEditingController vitals = TextEditingController();
+  TextEditingController diagnosis = TextEditingController();
   TextEditingController medicines = TextEditingController();
   TextEditingController advice = TextEditingController();
   bool isAuthorized = false;
   bool showLoading = false;
 
-  void checkAuthorization() async {
-    if (patientAddress.text.length < 40) {
-      Fluttertoast.showToast(msg: "Wrong address");
-      return;
-    }
-    setState(() {
-      showLoading = true;
-    });
-    //  isAuthorized = await Connector.isAuthorized(
-    //     Connector.address, EthereumAddress.fromHex(patientAddress.text));
-    if (!isAuthorized) {
-      Fluttertoast.showToast(
-          msg: "You are not authorized to give prescription.");
-    }
-    setState(() {
-      showLoading = false;
-    });
-  }
-
-  // void updateFee(String newAmount) async {
-  //   if (newAmount.isEmpty) {
-  //     Fluttertoast.showToast(msg: "Amount cannot be empty");
-  //     return;
-  //   }
-  //   setState(() {
-  //     showLoading = true;
-  //   });
-  //  // feeController.text = await Connector.updateDoctorFee(
-  //   //    Connector.address, Connector.key, newAmount);
-  //   setState(() {
-  //     showLoading = false;
-  //   });
-  // }
-
-  // void getFee() async {
-  // //  feeController.text = await Connector.getFee(Connector.address);
-  //   setState(() {});
-  // }
-
-  void sendPrescription() async {
-    setState(() {
-      showLoading = true;
-    });
-    String timestamp = DateTime.now().toString();
-    // String prescription =
-    //     "$timestamp#${Connector.address}#${notes.text}#${vitals.text}#${medicines.text}#${advice.text}";
-    // await Connector.setPresc(
-    //     Connector.address,
-    //     EthereumAddress.fromHex(patientAddress.text),
-    //     Connector.key,
-    //     prescription);
-    setState(() {
-      showLoading = false;
-      isAuthorized = false;
-    });
-  }
-
-  // @override
-  // void initState() {
-  //   getFee();
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
+    var contracts = Provider.of<Contracts>(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -140,11 +77,11 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width * 0.7,
+                      width: MediaQuery.of(context).size.width * 0.6,
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        //color: Colors.green.shade50,
-                        color: Color(0xff98ff98),
+                        // color: Colors.green.shade50,
+                        color: Color.fromARGB(255, 195, 225, 222),
                         borderRadius: BorderRadius.circular(5),
                         boxShadow: [
                           BoxShadow(
@@ -156,14 +93,14 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
                         ],
                       ),
                       child: Center(
-                          // child: Text(
-                          //   //Connector.address.toString(),
-                          //   style: TextStyle(
-                          //       fontSize:
-                          //           (MediaQuery.of(context).size.width * 0.02),
-                          //       fontWeight: FontWeight.bold,
-                          //       color: Colors.green),
-                          // ),
+                          child: Text(
+                            contracts.doctorData,
+                            style: TextStyle(
+                                fontSize:
+                                    (MediaQuery.of(context).size.width * 0.05),
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromARGB(255, 75, 78, 75)),
+                          ),
                           ),
                     ),
                     const SizedBox(
@@ -171,15 +108,14 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
                     ),
                     InkWell(
                       onTap: () {
-                        // Connector.key = "";
                         Navigator.popAndPushNamed(context, MyRoutes.selectionPage);
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.2,
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          //color: Colors.red.shade50,
-                          color: Color(0xffff5c5c),
+                          // color: Colors.red.shade50,
+                          color: Color(0xff05c0ff),
                           borderRadius: BorderRadius.circular(5),
                           boxShadow: [
                             BoxShadow(
@@ -197,7 +133,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
                                 fontSize:
                                     (MediaQuery.of(context).size.width * 0.03),
                                 // fontWeight: FontWeight.bold,
-                                color: Colors.black),
+                                color: Color.fromARGB(255, 249, 247, 247)),
                           ),
                         ),
                       ),
@@ -205,117 +141,6 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
                   ],
                 ),
               ),
-              // showLoading == false? Padding(
-              //     padding: const EdgeInsets.all(16.0),
-              //     child: Container(
-              //       padding: const EdgeInsets.only(bottom: 16, top: 8),
-              //       decoration: BoxDecoration(
-              //         color: Colors.white,
-              //         borderRadius: BorderRadius.circular(50),
-              //         boxShadow: [
-              //           BoxShadow(
-              //             color: Colors.grey.withOpacity(0.5),
-              //             blurRadius: 7,
-              //             offset: const Offset(
-              //                 0, 3), // changes position of shadow
-              //           ),
-              //         ],
-              //       ),
-              //       child: Column(
-              //         children: [
-              //           Center(
-              //             child: Container(
-              //               width: 200,
-              //               height: 50,
-              //               padding: const EdgeInsets.all(8),
-              //               child: Row(
-              //                 mainAxisAlignment:
-              //                     MainAxisAlignment.spaceAround,
-              //                 children: const [
-              //                   Icon(
-              //                     FontAwesomeIcons.ethereum,
-              //                     color: Colors.black,
-              //                     size: 25,
-              //                   ),
-              //                   VerticalDivider(
-              //                     color: Colors.black,
-              //                     thickness: 1,
-              //                   ),
-              //                   Text(
-              //                     'Update Fee',
-              //                     style: TextStyle(
-              //                         fontSize: 20,
-              //                         fontWeight: FontWeight.bold,
-              //                         color: Colors.black),
-              //                   ),
-              //                 ],
-              //               ),
-              //             ),
-              //           ),
-              //           Padding(
-              //             padding: const EdgeInsets.all(16.0),
-              //             child: CupertinoFormSection(
-              //               children: [
-              //                 CupertinoFormRow(
-              //                   child: CupertinoTextFormFieldRow(
-              //                     controller: feeController,
-              //                     placeholder: "Change Fee",
-              //                     padding: const EdgeInsets.only(left: 0),
-              //                     validator: (value) {
-              //                       if (value!.isEmpty) {
-              //                         return "Fee cannot be empty.";
-              //                       }
-              //                       return null;
-              //                     },
-              //                     enableSuggestions: true,
-              //                     prefix: Text(
-              //                       'Fee (In Wei)  | ',
-              //                       style:
-              //                           Theme.of(context).textTheme.caption,
-              //                     ),
-              //                   ),
-              //                 ),
-              //               ],
-              //             ),
-              //           ),
-              //           Center(
-              //             child: GestureDetector(
-              //               onTap: () => updateFee(feeController.text),
-              //               child: Container(
-              //                   width: 100,
-              //                   height: 40,
-              //                   decoration: BoxDecoration(
-              //                     color: Colors.black,
-              //                     borderRadius: BorderRadius.circular(50),
-              //                     boxShadow: [
-              //                       BoxShadow(
-              //                         color: Colors.grey.withOpacity(0.5),
-              //                         blurRadius: 7,
-              //                         offset: const Offset(0,
-              //                             3), // changes position of shadow
-              //                       ),
-              //                     ],
-              //                   ),
-              //                   child: const Center(
-              //                     child: Text(
-              //                       textAlign: TextAlign.center,
-              //                       'Update',
-              //                       style: TextStyle(
-              //                           fontSize: 15, color: Colors.white),
-              //                     ),
-              //                   )),
-              //             ),
-              //           ),
-              //         ],
-              //       ),
-              //     ),
-              //   )
-              // : const Center(
-              //     child: Padding(
-              //       padding: EdgeInsets.only(top: 40),
-              //       child: null,
-              //     ),
-              //   ),
               showLoading == false
                   ? Padding(
                       padding: const EdgeInsets.all(16.0),
@@ -368,32 +193,6 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
                                 ),
                               ),
                             ),
-                            // Padding(
-                            //   padding: const EdgeInsets.all(16.0),
-                            //   child: CupertinoFormSection(
-                            //     children: [
-                            //       CupertinoFormRow(
-                            //         child: CupertinoTextFormFieldRow(
-                            //           controller: patientAddress,
-                            //           placeholder: "Patient Address",
-                            //           padding: const EdgeInsets.only(left: 0),
-                            //           validator: (value) {
-                            //             if (value!.isEmpty) {
-                            //               return "Address cannot be empty.";
-                            //             }
-                            //             return null;
-                            //           },
-                            //           prefix: Text(
-                            //             'Address  | ',
-                            //             style: Theme.of(context)
-                            //                 .textTheme
-                            //                 .bodySmall,
-                            //           ),
-                            //         ),
-                            //       ),
-                            //     ],
-                            //   ),
-                            // ),
                             Padding(
                               padding: const EdgeInsets.fromLTRB(8, 0, 8, 32),
                               child: CupertinoFormSection(
@@ -430,7 +229,24 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
                             ),
                             Center(
                               child: GestureDetector(
-                                onTap: () => checkAuthorization(),
+                                onTap: () async {
+                                  if (patientAddress.text.length != 40) {
+                                    Fluttertoast.showToast(msg: "Wrong address");
+                                  }else{                                  
+                                   bool auth= await contracts.checkPermission(EthereumAddress.fromHex(patientAddress.text));
+                                    setState(() {
+                                    showLoading = true;
+                                    isAuthorized= auth;
+                                  });
+                                  }
+                                  if (!isAuthorized) {
+                                    Fluttertoast.showToast(
+                                        msg: "You are not authorized to give prescription.");
+                                  }
+                                  setState(() {
+                                    showLoading = false;
+                                  });
+                                },
                                 child: Container(
                                     width: 200,
                                     height: 40,
@@ -465,41 +281,18 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
                                           children: [
                                             CupertinoFormRow(
                                               child: CupertinoTextFormFieldRow(
-                                                controller: notes,
+                                                controller: diagnosis,
                                                 // placeholder: "Notes",
                                                 padding: const EdgeInsets.only(
                                                     left: 0),
                                                 validator: (value) {
                                                   if (value!.isEmpty) {
-                                                    return "Notes cannot be empty.";
+                                                    return "Diagnosis cannot be empty.";
                                                   }
                                                   return null;
                                                 },
                                                 prefix: Text(
-                                                  'Notes  | ',
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .caption,
-                                                ),
-                                                expands: true,
-                                                maxLength: null,
-                                                maxLines: null,
-                                              ),
-                                            ),
-                                            CupertinoFormRow(
-                                              child: CupertinoTextFormFieldRow(
-                                                controller: vitals,
-                                                // placeholder: "Vitals",
-                                                padding: const EdgeInsets.only(
-                                                    left: 0),
-                                                validator: (value) {
-                                                  if (value!.isEmpty) {
-                                                    return "Vitals cannot be empty.";
-                                                  }
-                                                  return null;
-                                                },
-                                                prefix: Text(
-                                                  'Vitals  | ',
+                                                  'Diagnosis  | ',
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .caption,
@@ -517,12 +310,12 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
                                                     left: 0),
                                                 validator: (value) {
                                                   if (value!.isEmpty) {
-                                                    return "Medicines cannot be empty.";
+                                                    return "Medications cannot be empty.";
                                                   }
                                                   return null;
                                                 },
                                                 prefix: Text(
-                                                  'Medicines  | ',
+                                                  'Medications | ',
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .caption,
@@ -538,14 +331,8 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
                                                 // placeholder: "Advice Address",
                                                 padding: const EdgeInsets.only(
                                                     left: 0),
-                                                validator: (value) {
-                                                  if (value!.isEmpty) {
-                                                    return "Advice cannot be empty.";
-                                                  }
-                                                  return null;
-                                                },
                                                 prefix: Text(
-                                                  'Advice  | ',
+                                                  'Advices  | ',
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .caption,
@@ -562,7 +349,13 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
                                               top: 16, bottom: 16),
                                           child: Center(
                                             child: GestureDetector(
-                                              onTap: () => sendPrescription(),
+                                              onTap: () async {
+                                                contracts.setPrescription(EthereumAddress.fromHex(patientAddress.text), diagnosis.text, medicines.text,advice.text, DateTime.now().millisecondsSinceEpoch.toString());
+                                                    setState(() {
+                                                    showLoading = false;
+                                                    isAuthorized = false;
+                                                  });
+                                              },
                                               child: Container(
                                                   width: 100,
                                                   height: 40,

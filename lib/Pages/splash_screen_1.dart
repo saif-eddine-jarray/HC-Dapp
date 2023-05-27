@@ -57,7 +57,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
                       maxWidth: 253,
                     ),
                     child: Text(
-                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Malesuada vulputate facilisi eget neque, nunc suspendisse massa augue. Congue sit augue volutpat vel. Dictum dignissim ac pharetra.',
+                      "Get ready to embark on a journey towards a healthier, happier you. Let's start this empowering experience together!",
                       textAlign: TextAlign.center,
                       style: SafeGoogleFont(
                         'Roboto',

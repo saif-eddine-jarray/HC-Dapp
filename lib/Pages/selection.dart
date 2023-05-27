@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hc_dapp/Services/Contracts.dart';
 import 'package:hc_dapp/Utils/routes.dart';
 import 'package:hc_dapp/utils.dart';
-
+import 'package:provider/provider.dart';
+import 'dart:developer' as dev;
 class SelectionPage extends StatefulWidget {
   const SelectionPage({Key? key}) : super(key: key);
 
@@ -10,8 +12,10 @@ class SelectionPage extends StatefulWidget {
 }
 
 class _SelectionPageState extends State<SelectionPage> {
+
   @override
   Widget build(BuildContext context) {
+    var contracts = Provider.of<Contracts>(context);
     return Scaffold(
       body: Center(
         child: Column(
@@ -41,12 +45,20 @@ class _SelectionPageState extends State<SelectionPage> {
                         margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
                         alignment: Alignment.center,
                         child: ElevatedButton(
-                          onPressed: () {
-                            // Navigate to next screen when button is pressed
-                            Navigator.pushReplacementNamed(
+                          onPressed: () async {
+                              bool doctorExist = await contracts.existDoctor();
+                              dev.log(doctorExist.toString());
+                              if(doctorExist){
+                                Navigator.pushReplacementNamed(
                                 context,
-                                MyRoutes
-                                    .doctorLoginPage); // configure next page here !!
+                                MyRoutes.doctorHomePage);
+                              }else{
+                                Navigator.pushReplacementNamed(
+                                context,
+                                MyRoutes.doctorSignupPage);
+                              }
+                            // Navigate to next screen when button is pressed
+                             // configure next page here !!
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Color(0xff05c0ff),
@@ -75,12 +87,20 @@ class _SelectionPageState extends State<SelectionPage> {
                       Container(
                         alignment: Alignment.center,
                         child: ElevatedButton(
-                          onPressed: () {
-                            // Navigate to next screen when button is pressed
-                            Navigator.pushReplacementNamed(
+                          onPressed: () async {
+                              bool patientExist = await contracts.existPatient();
+                              dev.log(patientExist.toString());
+                              if(patientExist){
+                                Navigator.pushReplacementNamed(
                                 context,
-                                MyRoutes
-                                    .patientLoginPage); // configure next page here !!
+                                MyRoutes.patientHomePage);
+                              }else{
+                                Navigator.pushReplacementNamed(
+                                context,
+                                MyRoutes.patientSignupPage);
+                              }
+                            // Navigate to next screen when button is pressed
+                             // configure next page here !!
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Color(0xffcef3ff),

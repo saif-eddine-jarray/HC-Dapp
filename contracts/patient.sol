@@ -9,6 +9,7 @@ contract Patient {
         address doctor;
         string diagnosis;
         string medications;
+        string advices;
         string date;
     }
    mapping(address=>patientData) patients;
@@ -28,19 +29,26 @@ contract Patient {
    function deletePermission() public {
         delete permissions[msg.sender];
    }
-   function checkPermission(address patient,address doctor) public view returns(bool){
-    return(permissions[patient]==doctor);
+   function checkPermission(address patient) public view returns(bool){
+    return(permissions[patient]==msg.sender);
    }
-   function setPrescription(address patient,string memory diagnosis,string memory medications,string memory date, address doctor) public {
-        require(checkPermission(patient,doctor),"Permission denied");
+   function setPrescription(address patient,string memory diagnosis,string memory medications,string memory advices,string memory date) public {
+        require(checkPermission(patient),"Permission denied");
         prescription memory pres;
         pres.date=date;
         pres.diagnosis=diagnosis;
         pres.medications=medications;
-        pres.doctor=doctor;
+        pres.advices=advices;
+        pres.doctor=msg.sender;
         prescriptions[patient].push(pres);
    }
     function exist() public view returns (bool){
         return (patientExist[msg.sender]);
+    }
+    function displayPrescription() public view returns(prescription[] memory){
+        return(prescriptions[msg.sender]);
+    }
+    function displayPatient() public view returns (string memory, string memory){
+        return(patients[msg.sender].firstName,patients[msg.sender].lastName);
     }
 }

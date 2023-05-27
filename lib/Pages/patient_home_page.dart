@@ -4,10 +4,11 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hc_dapp/Pages/view_prescription.dart';
-// import 'package:hc_dapp/Utils/connector.dart';
+import 'package:hc_dapp/Services/Contracts.dart';
 import 'package:hc_dapp/Utils/routes.dart';
+import 'package:provider/provider.dart';
 import 'package:web3dart/credentials.dart';
-
+import 'dart:developer' as dev;
 class PatientHomePage extends StatefulWidget {
   const PatientHomePage({Key? key}) : super(key: key);
 
@@ -18,41 +19,13 @@ class PatientHomePage extends StatefulWidget {
 class _PatientHomePageState extends State<PatientHomePage> {
   TextEditingController doctorAddress = TextEditingController();
   bool showLoading = true;
-  List<List<String>> prescriptions = [];
-  // void setAuthorization() async {
-  //   if (doctorAddress.text.length < 40) {
-  //     Fluttertoast.showToast(msg: "Wrong Address");
-  //     return;
-  //   }
-  //   bool isAuthorized = await Connector.addAuthorization(
-  //       EthereumAddress.fromHex(doctorAddress.text),
-  //       Connector.address,
-  //       Connector.key);
-  //   if (!isAuthorized) {
-  //     Fluttertoast.showToast(msg: "Authorization Failed");
-  //   } else {
-  //     Fluttertoast.showToast(
-  //         msg: "Doctor is now authorized to give you prescription.");
-  //     doctorAddress.clear();
-  //   }
-  // }
-
-  // void getPrescriptions() async {
-  //   setState(() {
-  //     showLoading = true;
-  //   });
-  //   List<dynamic> result = await Connector.getPresc(Connector.address);
-  //   for (var element in result) {
-  //     prescriptions.add(element.toString().split('#'));
-  //   }
-  //   prescriptions = prescriptions.reversed.toList();
-  //   setState(() {
-  //     showLoading = false;
-  //   });
-  // }
-
-  _showPickerAuthorization() {
-    showModalBottomSheet(
+  @override
+  Widget build(BuildContext context) {
+    var contracts = Provider.of<Contracts>(context);
+    return Scaffold(
+      floatingActionButton: InkWell(
+        onTap: () async{
+        showModalBottomSheet(
         isScrollControlled: true,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(25.0))),
@@ -105,7 +78,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
                   ),
                   InkWell(
                       onTap: () async {
-                        // setAuthorization();
+                        await contracts.permission(EthereumAddress.fromHex(doctorAddress.text));
                         Navigator.pop(context);
                         doctorAddress.clear();
                       },
@@ -124,19 +97,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
             ),
           );
         });
-  }
-
-  @override
-  void initState() {
-    // getPrescriptions();
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: InkWell(
-        onTap: () => _showPickerAuthorization(),
+        },
         child: Container(
           width: (MediaQuery.of(context).size.width / 1.5),
           height: 50,
@@ -232,11 +193,11 @@ class _PatientHomePageState extends State<PatientHomePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width * 0.7,
+                      width: MediaQuery.of(context).size.width * 0.6,
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         // color: Colors.green.shade50,
-                        color: Color(0xff98ff98),
+                        color: Color.fromARGB(255, 195, 225, 222),
                         borderRadius: BorderRadius.circular(5),
                         boxShadow: [
                           BoxShadow(
@@ -248,14 +209,14 @@ class _PatientHomePageState extends State<PatientHomePage> {
                         ],
                       ),
                       child: Center(
-                          // child: Text(
-                          //   Connector.address.toString(),
-                          //   style: TextStyle(
-                          //       fontSize:
-                          //           (MediaQuery.of(context).size.width * 0.02),
-                          //       fontWeight: FontWeight.bold,
-                          //       color: Colors.green),
-                          // ),
+                          child: Text(
+                            contracts.patientData,
+                            style: TextStyle(
+                                fontSize:
+                                    (MediaQuery.of(context).size.width * 0.05),
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromARGB(255, 75, 78, 75)),
+                          ),
                           ),
                     ),
                     const SizedBox(
@@ -263,7 +224,6 @@ class _PatientHomePageState extends State<PatientHomePage> {
                     ),
                     InkWell(
                       onTap: () {
-                        // Connector.key = "";
                         Navigator.popAndPushNamed(context, MyRoutes.selectionPage);
                       },
                       child: Container(
@@ -271,7 +231,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
                           // color: Colors.red.shade50,
-                          color: Color(0xffff5c5c),
+                          color: Color(0xff05c0ff),
                           borderRadius: BorderRadius.circular(5),
                           boxShadow: [
                             BoxShadow(
@@ -289,7 +249,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
                                 fontSize:
                                     (MediaQuery.of(context).size.width * 0.03),
                                 // fontWeight: FontWeight.bold,
-                                color: Colors.black),
+                                color: Color.fromARGB(255, 249, 247, 247)),
                           ),
                         ),
                       ),
@@ -328,20 +288,12 @@ class _PatientHomePageState extends State<PatientHomePage> {
                   ),
                 ),
               ),
-              (showLoading == false && prescriptions.isNotEmpty)
+              (contracts.isLoading== false && contracts.prescriptions.isNotEmpty)
                   ? ListView.builder(
-                      itemCount: prescriptions.length,
+                      itemCount: contracts.prescriptions.length,
                       shrinkWrap: true,
                       itemBuilder: (BuildContext context, int index) {
                         return InkWell(
-                          // onTap: () async {
-                          //   await Navigator.push(
-                          //       context,
-                          //       MaterialPageRoute(
-                          //           builder: (context) => ViewPrescription(
-                          //               index: index + 1,
-                          //               record: prescriptions[index])));
-                          // },
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
                             child: Container(
@@ -360,8 +312,9 @@ class _PatientHomePageState extends State<PatientHomePage> {
                                     ),
                                   ],
                                 ),
-                                child: Row(
-                                  children: [
+                                child: 
+                                Row(
+                                  children:[
                                     Padding(
                                       padding:
                                           const EdgeInsets.only(right: 8.0),
@@ -398,7 +351,8 @@ class _PatientHomePageState extends State<PatientHomePage> {
                                               width: 10,
                                             ),
                                             Text(
-                                              prescriptions[index][0],
+                                              contracts.prescriptions[index][0].toString(),
+                                              style: TextStyle(fontSize: 11),
                                               // style:
                                               //     Theme.of(context).textTheme.caption,
                                             ),
@@ -423,7 +377,61 @@ class _PatientHomePageState extends State<PatientHomePage> {
                                                   150,
                                               // height: 30,
                                               child: Text(
-                                                prescriptions[index][1],
+                                                contracts.prescriptions[index][1],
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .caption,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                         Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            const Icon(
+                                              FontAwesomeIcons.userDoctor,
+                                              size: 15,
+                                              color: Colors.grey,
+                                            ),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width -
+                                                  150,
+                                              // height: 30,
+                                              child: Text(
+                                                contracts.prescriptions[index][2],
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .caption,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                         Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            const Icon(
+                                              FontAwesomeIcons.userDoctor,
+                                              size: 15,
+                                              color: Colors.grey,
+                                            ),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width -
+                                                  150,
+                                              // height: 30,
+                                              child: Text(
+                                                contracts.prescriptions[index][3],
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .caption,
@@ -439,7 +447,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
                         );
                       },
                     )
-                  : showLoading == true
+                  : contracts.isLoading == true
                       ? const Center(
                           child: Padding(
                             padding: EdgeInsets.only(top: 40),
@@ -449,11 +457,11 @@ class _PatientHomePageState extends State<PatientHomePage> {
                           ),
                         )
                       : const Padding(
-                          padding: EdgeInsets.only(top: 32.0, left: 16),
+                          padding: EdgeInsets.only(top: 32.0, left: 50),
                           child: Text(
                             "No Medical History!",
                             style: TextStyle(
-                                fontSize: 70,
+                                fontSize:30 ,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.grey),
                           ),

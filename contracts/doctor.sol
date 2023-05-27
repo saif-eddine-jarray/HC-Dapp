@@ -8,14 +8,12 @@ contract Doctor {
    mapping(address =>doctorData) doctors;
    address[] add;
    mapping(address =>bool) doctorExist;
-   event doctoradded(string firstName, string lastName);
     function addDoctor(string memory firstName , string memory lastName) public {
         doctorData memory doctor;
         doctor.firstName=firstName;
         doctor.lastName=lastName;
         doctors[msg.sender]=doctor;
         doctorExist[msg.sender]=true;
-        emit doctoradded(firstName, lastName);
     }
     function exist() public view returns (bool){
         return (doctorExist[msg.sender]);
